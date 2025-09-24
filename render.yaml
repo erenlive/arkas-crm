@@ -27,7 +27,7 @@ services:
         value: false
 
   # Frontend Static Site
-  - type: web
+  - type: static_site  # <<< YAPILMASI GEREKEN DEĞİŞİKLİK BURADA
     name: arpack-crm-frontend
     env: static
     plan: free
