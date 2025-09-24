@@ -3,7 +3,6 @@ services:
   - type: web
     name: arpack-crm-backend
     env: node
-    plan: free
     buildCommand: cd server && npm install && npx prisma generate && npx prisma migrate deploy
     startCommand: cd server && npm start
     envVars:
@@ -27,10 +26,9 @@ services:
         value: false
 
   # Frontend Static Site
-  - type: static  # <<< YAPILMASI GEREKEN DEĞİŞİKLİK BURADA
+  - type: web
     name: arpack-crm-frontend
     env: static
-    plan: free
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
     routes:
@@ -40,4 +38,3 @@ services:
 
 databases:
   - name: arpack-crm-db
-    plan: free
