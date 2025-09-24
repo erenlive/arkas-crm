@@ -1,0 +1,43 @@
+services:
+  # Backend API Service
+  - type: web
+    name: arpack-crm-backend
+    env: node
+    plan: free
+    buildCommand: cd server && npm install && npx prisma generate && npx prisma migrate deploy
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: arpack-crm-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SMTP_HOST
+        value: smtp.office365.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        value: info@arpack.tr
+      - key: SMTP_FROM
+        value: "Arkas Ambalaj CRM <info@arpack.tr>"
+      - key: SMTP_SECURE
+        value: false
+
+  # Frontend Static Site
+  - type: web
+    name: arpack-crm-frontend
+    env: static
+    plan: free
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: client/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: arpack-crm-db
+    plan: free
